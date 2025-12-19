@@ -26,10 +26,16 @@ lib/features/login/
 
 ## 🛠️ Installation
 
-You can activate Packed CLI globally from your local path:
+Install Packed CLI from pub.dev:
 
 ```bash
-dart pub global activate --source path .
+dart pub global activate packed
+```
+
+Alternatively, you can install it directly from GitHub:
+
+```bash
+dart pub global activate --source git https://github.com/Ahmedx44/packed
 ```
 
 ## 📖 Usage
@@ -84,3 +90,7 @@ class ProfileState extends Equatable {
 ## 🤝 Contributing
 
 Feel free to open issues or submit pull requests to improve the templates or add new commands!
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
