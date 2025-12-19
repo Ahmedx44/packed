@@ -84,7 +84,3 @@ class ProfileState extends Equatable {
 ## 🤝 Contributing
 
 Feel free to open issues or submit pull requests to improve the templates or add new commands!
-
-## 📄 License
-
-This project is licensed under the MIT License.
