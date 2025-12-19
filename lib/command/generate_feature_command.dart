@@ -4,7 +4,6 @@ import 'package:packed/templates/cubit_template.dart';
 import 'package:packed/templates/page_template.dart';
 import 'package:packed/templates/state_template.dart';
 import 'package:packed/templates/view_template.dart';
-import 'package:packed/utils/utils.dart';
 
 class GenerateFeatureCommand {
   void run(String name) {
