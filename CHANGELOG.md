@@ -1,3 +1,4 @@
-## 0.1.1
+## 0.1.2
 
-- Initial version.
+- Fix: Updated version number to 0.1.2.
+
