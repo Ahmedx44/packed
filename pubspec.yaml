@@ -1,6 +1,6 @@
 name: packed
 description: A CLI tool to rapidly generate Flutter feature structures following the BLoC pattern.
-version: 0.1.2
+version: 0.1.3
 repository: https://github.com/Ahmedx44/packed
 homepage: https://github.com/Ahmedx44/packed
 
