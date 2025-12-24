@@ -1,5 +1,6 @@
 ## 0.2.0
 
+- Feature: Added automatic installation of required dependencies (`flutter_bloc`, `get_it`, `equatable`, `dartz`).
 - Feature: Added Clean Architecture support for feature generation.
 - Feature: Added GetIt dependency injection support.
 - Feature: Added standalone usecase generation with automatic DI registration.

@@ -13,6 +13,8 @@ class GenerateUsecaseCommand {
     final usecasePath = '$basePath/domain/usecases/${nameSnake}_usecase.dart';
     final diPath = '$basePath/di/${featureSnake}_di.dart';
 
+    _addDependencies();
+
     if (!Directory(basePath).existsSync()) {
       print('❌ Feature "$featurePascal" does not exist');
       return;
@@ -85,5 +87,19 @@ class GenerateUsecaseCommand {
     }
 
     file.writeAsStringSync(newContent);
+  }
+
+  void _addDependencies() {
+    if (!File('pubspec.yaml').existsSync()) return;
+
+    print('📦 Adding dependencies...');
+    Process.runSync('flutter', [
+      'pub',
+      'add',
+      'flutter_bloc',
+      'get_it',
+      'equatable',
+      'dartz',
+    ]);
   }
 }

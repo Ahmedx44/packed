@@ -19,6 +19,8 @@ class GenerateFeatureCommand {
     final featurePascal = Utils.pascal(name);
     final basePath = 'lib/features/$featureSnake';
 
+    _addDependencies();
+
     // DI
     _createDir('$basePath/di');
     _createFile(
@@ -106,5 +108,19 @@ class GenerateFeatureCommand {
   void _createFile(String path, String content) {
     final file = File(path);
     file.writeAsStringSync(content);
+  }
+
+  void _addDependencies() {
+    if (!File('pubspec.yaml').existsSync()) return;
+
+    print('📦 Adding dependencies...');
+    Process.runSync('flutter', [
+      'pub',
+      'add',
+      'flutter_bloc',
+      'get_it',
+      'equatable',
+      'dartz',
+    ]);
   }
 }
