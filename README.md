@@ -23,6 +23,7 @@ A powerful CLI tool to rapidly generate Flutter feature structures following **C
 ```bash
 # From pub.dev
 dart pub global activate packed
+```
 
 ---
 
@@ -107,15 +108,6 @@ packed generate usecase UpdateProfile Home
 - **Models**: Data Transfer Objects (DTOs) with JSON serialization (extends Entities).
 - **Datasources**: Remote and Local data handling logic.
 - **Repository Impl**: Concrete implementation of domain repositories.
-
----
-
-## 📦 Dependencies
-Packed ensures your project has the following industry-standard dependencies:
-- `flutter_bloc`: State management.
-- `get_it`: Service locator for DI.
-- `equatable`: Value-based equality.
-- `dartz`: Functional programming (for `Either` type).
 
 ---
 

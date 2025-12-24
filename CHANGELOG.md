@@ -1,3 +1,8 @@
+## 0.2.1
+
+- Feature: Added `packed generate init` command to bootstrap project with core layers and DI container.
+- Documentation: Improved README with badges, better formatting, and comprehensive usage guides.
+
 ## 0.2.0
 
 - Feature: Added automatic installation of required dependencies (`flutter_bloc`, `get_it`, `equatable`, `dartz`).
@@ -10,7 +15,7 @@
 
 ## 0.1.3
 
- - chore: update version to 0.1.3 in 
+- Chore: Updated versioning and project structure.
 
 ## 0.1.2
 
