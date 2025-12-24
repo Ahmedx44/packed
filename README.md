@@ -1,4 +1,4 @@
-# Packed CLI �
+# Packed CLI 📦
 
 A powerful CLI tool to rapidly generate Flutter feature structures following **Clean Architecture** and the **BLoC/Cubit** pattern.
 
