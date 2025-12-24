@@ -7,6 +7,7 @@ class PageTemplate {
     return '''
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
 import '../cubit/${name}_cubit.dart';
 import '${name}_view.dart';
@@ -17,7 +18,7 @@ class ${pascal}Page extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ${pascal}Cubit(),
+      create: (_) => GetIt.instance<${pascal}Cubit>(),
       child: const ${pascal}View(),
     );
   }

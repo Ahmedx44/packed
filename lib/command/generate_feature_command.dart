@@ -4,37 +4,96 @@ import 'package:packed/templates/cubit_template.dart';
 import 'package:packed/templates/page_template.dart';
 import 'package:packed/templates/state_template.dart';
 import 'package:packed/templates/view_template.dart';
+import 'package:packed/templates/entity_template.dart';
+import 'package:packed/templates/repository_template.dart';
+import 'package:packed/templates/usecase_template.dart';
+import 'package:packed/templates/model_template.dart';
+import 'package:packed/templates/datasource_template.dart';
+import 'package:packed/templates/repository_impl_template.dart';
+import 'package:packed/templates/di_template.dart';
+import 'package:packed/utils/utils.dart';
 
 class GenerateFeatureCommand {
   void run(String name) {
-    final featureName = name.toLowerCase();
-    final basePath = 'lib/features/$featureName';
+    final featureSnake = Utils.snake(name);
+    final featurePascal = Utils.pascal(name);
+    final basePath = 'lib/features/$featureSnake';
 
-    _createDir('${basePath}/cubit');
-    _createDir('${basePath}/page');
-    _createDir('${basePath}/widget');
+    // DI
+    _createDir('$basePath/di');
+    _createFile(
+      '$basePath/di/${featureSnake}_di.dart',
+      DiTemplate.diTemplate(featureSnake),
+    );
+
+    // Presentation Layer
+    _createDir('$basePath/presentation/cubit');
+    _createDir('$basePath/presentation/pages');
+    _createDir('$basePath/presentation/widgets');
 
     _createFile(
-      '$basePath/cubit/${featureName}_cubit.dart',
-      CubitTemplate.cubitTemplate(featureName),
+      '$basePath/presentation/cubit/${featureSnake}_cubit.dart',
+      CubitTemplate.cubitTemplate(featureSnake),
     );
 
     _createFile(
-      '$basePath/cubit/${featureName}_state.dart',
-      StateTemplate.stateTemplate(featureName),
+      '$basePath/presentation/cubit/${featureSnake}_state.dart',
+      StateTemplate.stateTemplate(featureSnake),
     );
 
     _createFile(
-      '$basePath/page/${featureName}_page.dart',
-      PageTemplate.pageTemplate(featureName),
+      '$basePath/presentation/pages/${featureSnake}_page.dart',
+      PageTemplate.pageTemplate(featureSnake),
     );
 
     _createFile(
-      '$basePath/page/${featureName}_view.dart',
-      ViewTemplate.viewTemplate(featureName),
+      '$basePath/presentation/pages/${featureSnake}_view.dart',
+      ViewTemplate.viewTemplate(featureSnake),
     );
 
-    print('✅ Feature "$featureName" generated successfully');
+    // Domain Layer
+    _createDir('$basePath/domain/entities');
+    _createDir('$basePath/domain/repositories');
+    _createDir('$basePath/domain/usecases');
+
+    _createFile(
+      '$basePath/domain/entities/${featureSnake}_entity.dart',
+      EntityTemplate.entityTemplate(featureSnake),
+    );
+
+    _createFile(
+      '$basePath/domain/repositories/${featureSnake}_repository.dart',
+      RepositoryTemplate.repositoryTemplate(featureSnake),
+    );
+
+    _createFile(
+      '$basePath/domain/usecases/get_${featureSnake}_usecase.dart',
+      UsecaseTemplate.usecaseTemplate('get_$featureSnake', featureSnake),
+    );
+
+    // Data Layer
+    _createDir('$basePath/data/datasources');
+    _createDir('$basePath/data/models');
+    _createDir('$basePath/data/repositories');
+
+    _createFile(
+      '$basePath/data/datasources/${featureSnake}_remote_datasource.dart',
+      DatasourceTemplate.datasourceTemplate(featureSnake),
+    );
+
+    _createFile(
+      '$basePath/data/models/${featureSnake}_model.dart',
+      ModelTemplate.modelTemplate(featureSnake),
+    );
+
+    _createFile(
+      '$basePath/data/repositories/${featureSnake}_repository_impl.dart',
+      RepositoryImplTemplate.repositoryImplTemplate(featureSnake),
+    );
+
+    print(
+      '✅ Feature "$featurePascal" with Clean Architecture generated successfully',
+    );
   }
 
   void _createDir(String path) {

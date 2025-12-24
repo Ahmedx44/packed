@@ -1,96 +1,99 @@
-# Packed CLI 📦
+# Packed CLI �
 
-A Simple Flutter CLI tool to rapidly generate feature structures following the BLoC pattern. Stop wasting time creating folders and boilerplate files manually.
+A powerful CLI tool to rapidly generate Flutter feature structures following **Clean Architecture** and the **BLoC/Cubit** pattern.
 
-## 🚀 Features
+## Features
 
-- **Instant Feature Generation**: Creates a complete feature folder structure in seconds.
-- **BLoC/Cubit Ready**: Generates Cubit, State (with Equatable), Page, and View files.
-- **Best Practices**: Follows a clean architecture approach with a clear separation between UI and Logic.
-- **Smart Templates**: Includes `copyWith`, `props`, and standard `isLoading`/`error` states out of the box.
+- 🏗️ **Clean Architecture**: Generates Data, Domain, and Presentation layers.
+- 💉 **Dependency Injection**: Automatic `get_it` registration for all layers.
+- 🧩 **Modular Structure**: Each feature is self-contained with its own DI, Cubit, and Usecases.
+- ⚡ **Standalone Usecases**: Generate new usecases for existing features with automatic DI registration.
+- 📏 **Naming Conventions**: Automatically handles `snake_case` for files and `PascalCase` for classes.
 
-## 📂 Generated Structure
-
-When you run `packed generate feature login`, it creates:
-
-```text
-lib/features/login/
-├── cubit/
-│   ├── login_cubit.dart
-│   └── login_state.dart
-├── page/
-│   ├── login_page.dart
-│   └── login_view.dart
-└── widget/ (empty directory for your components)
-```
-
-## 🛠️ Installation
-
-Install Packed CLI from pub.dev:
+## Installation
 
 ```bash
+# From local path
+dart pub global activate --source path .
+
+# Or if published
 dart pub global activate packed
 ```
 
-Alternatively, you can install it directly from GitHub:
+## Usage
 
-```bash
-dart pub global activate --source git https://github.com/Ahmedx44/packed
-```
-
-## 📖 Usage
-
-### Generate a New Feature
-
-To generate a new feature, run:
+### 1. Generate a New Feature
+Generates a complete Clean Architecture folder structure with boilerplate code.
 
 ```bash
 packed generate feature <feature_name>
 ```
 
-Example:
+**Example:**
 ```bash
-packed generate feature profile
+packed generate feature Home
 ```
 
-## 📝 Templates
-
-### State Template
-The generated state includes `isLoading` and `error` fields by default, along with `copyWith` and `Equatable` integration:
-
-```dart
-class ProfileState extends Equatable {
-  final bool isLoading;
-  final String? error;
-
-  const ProfileState({
-    this.isLoading = false,
-    this.error,
-  });
-
-  ProfileState copyWith({
-    bool? isLoading,
-    String? error,
-  }) {
-    return ProfileState(
-      isLoading: isLoading ?? this.isLoading,
-      error: error ?? this.error,
-    );
-  }
-
-  @override
-  List<Object?> get props => [isLoading, error];
-}
+**Generated Structure:**
+```text
+lib/features/home/
+├── data/
+│   ├── datasources/home_remote_datasource.dart
+│   ├── models/home_model.dart
+│   └── repositories/home_repository_impl.dart
+├── domain/
+│   ├── entities/home_entity.dart
+│   ├── repositories/home_repository.dart
+│   └── usecases/get_home_usecase.dart
+├── presentation/
+│   ├── cubit/home_cubit.dart & home_state.dart
+│   ├── pages/home_page.dart & home_view.dart
+│   └── widgets/
+└── di/
+    └── home_di.dart (Dependency Injection)
 ```
 
-### Page & View Template
-- **Page**: Handles `BlocProvider` initialization.
-- **View**: Contains the `Scaffold` and `BlocBuilder` boilerplate.
+### 2. Generate a Standalone Usecase
+Adds a new usecase to an existing feature and automatically registers it in the feature's DI file.
 
-## 🤝 Contributing
+```bash
+packed generate usecase <usecase_name> <feature_name>
+```
 
-Feel free to open issues or submit pull requests to improve the templates or add new commands!
+**Example:**
+```bash
+packed generate usecase UpdateProfile Home
+```
 
-## 📄 License
+This will:
+1. Create `update_profile_usecase.dart` in the `home` feature.
+2. Add the import to `home_di.dart`.
+3. Register `UpdateProfileUseCase` in the `GetIt` container.
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## Architecture Overview
+
+### Presentation Layer
+- **Cubit**: Handles state management.
+- **Page**: Entry point that provides the Cubit using `GetIt`.
+- **View**: The actual UI layout.
+
+### Domain Layer
+- **Entities**: Simple business objects (using `Equatable`).
+- **Repositories**: Abstract interfaces.
+- **Usecases**: Single-responsibility business logic classes.
+
+### Data Layer
+- **Models**: DTOs with JSON serialization (extends Entities).
+- **Datasources**: Remote/Local data handling.
+- **Repository Impl**: Implementation of domain repositories.
+
+## Dependencies
+
+The generated code assumes your project has the following dependencies:
+- `flutter_bloc`
+- `get_it`
+- `equatable`
+- `dartz` (for Either)
+
+## License
+MIT
