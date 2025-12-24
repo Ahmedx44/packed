@@ -6,10 +6,11 @@ class RepositoryTemplate {
 
     return '''
 import 'package:dartz/dartz.dart';
+import '../../core/error/failures.dart';
 import '../entities/${name}_entity.dart';
 
 abstract class ${pascal}Repository {
-  // TODO: Add repository methods
+  Future<Either<Failure, ${pascal}Entity>> get${pascal}();
 }
 ''';
   }

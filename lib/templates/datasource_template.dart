@@ -5,13 +5,21 @@ class DatasourceTemplate {
     final pascal = Utils.pascal(name);
 
     return '''
+import '../models/${name}_model.dart';
+
 abstract class ${pascal}RemoteDataSource {
-  // TODO: Add datasource methods
+  Future<${pascal}Model> get${pascal}();
 }
 
 class ${pascal}RemoteDataSourceImpl implements ${pascal}RemoteDataSource {
   // final HttpClient client;
   // ${pascal}RemoteDataSourceImpl(this.client);
+
+  @override
+  Future<${pascal}Model> get${pascal}() async {
+    // TODO: Implement remote data source
+    return const ${pascal}Model();
+  }
 }
 ''';
   }

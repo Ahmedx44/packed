@@ -7,16 +7,20 @@ class UsecaseTemplate {
 
     return '''
 import 'package:dartz/dartz.dart';
+import '../../core/error/failures.dart';
+import '../../core/usecases/usecase.dart';
+import '../entities/${featureName}_entity.dart';
 import '../repositories/${featureName}_repository.dart';
 
-class ${pascal}UseCase {
+class ${pascal}UseCase implements UseCase<${featurePascal}Entity, NoParams> {
   final ${featurePascal}Repository repository;
 
   ${pascal}UseCase(this.repository);
 
-  // Future<Either<Failure, dynamic>> call() async {
-  //   return await repository.execute();
-  // }
+  @override
+  Future<Either<Failure, ${featurePascal}Entity>> call(NoParams params) async {
+    return await repository.get${featurePascal}();
+  }
 }
 ''';
   }

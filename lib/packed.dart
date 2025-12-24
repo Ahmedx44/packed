@@ -1,6 +1,7 @@
 import 'package:args/args.dart';
 import 'package:packed/command/generate_feature_command.dart';
 import 'package:packed/command/generate_usecase_command.dart';
+import 'package:packed/command/generate_init_command.dart';
 
 class PackedCli {
   void run(List<String> argument) {
@@ -9,6 +10,7 @@ class PackedCli {
     final generate = parser.addCommand('generate');
     generate.addCommand('feature');
     generate.addCommand('usecase');
+    generate.addCommand('init');
 
     final result = parser.parse(argument);
 
@@ -41,6 +43,11 @@ class PackedCli {
         final featureName = subCommand.arguments[1];
 
         GenerateUsecaseCommand().run(usecaseName, featureName);
+        return;
+      }
+
+      if (subCommand?.name == 'init') {
+        GenerateInitCommand().run();
         return;
       }
     }
