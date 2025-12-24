@@ -89,8 +89,6 @@ This will:
 - **Repository Impl**: Implementation of domain repositories.
 
 ## Dependencies
-
-The generated code assumes your project has the following dependencies:
 - `flutter_bloc`
 - `get_it`
 - `equatable`
