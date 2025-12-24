@@ -1,95 +1,115 @@
 # Packed CLI 📦
 
-A Simple Flutter CLI tool to rapidly generate feature structures following the BLoC pattern. Stop wasting time creating folders and boilerplate files manually.
+[![Pub Version](https://img.shields.io/pub/v/packed?color=blue)](https://pub.dev/packages/packed)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+A powerful CLI tool to rapidly generate Flutter feature structures following **Clean Architecture** and the **BLoC/Cubit** pattern. Stop wasting time on boilerplate and focus on building features.
+
+---
 
 ## 🚀 Features
 
-- **Instant Feature Generation**: Creates a complete feature folder structure in seconds.
-- **BLoC/Cubit Ready**: Generates Cubit, State (with Equatable), Page, and View files.
-- **Best Practices**: Follows a clean architecture approach with a clear separation between UI and Logic.
-- **Smart Templates**: Includes `copyWith`, `props`, and standard `isLoading`/`error` states out of the box.
+- 🏗️ **Clean Architecture**: Automatically generates Data, Domain, and Presentation layers.
+- 📦 **Auto-Dependencies**: Automatically installs `flutter_bloc`, `get_it`, `equatable`, and `dartz` if they are missing.
+- 💉 **Dependency Injection**: Automatic `get_it` registration for all layers (Datasources, Repositories, Usecases, and Cubits).
+- 🧩 **Modular Structure**: Each feature is self-contained with its own DI file for better maintainability.
+- ⚡ **Standalone Usecases**: Generate new usecases for existing features with automatic DI registration.
+- 📏 **Smart Naming**: Automatically handles `snake_case` for files and `PascalCase` for classes.
 
-## 📂 Generated Structure
+---
 
-When you run `packed generate feature login`, it creates:
-
-```text
-lib/features/login/
-├── cubit/
-│   ├── login_cubit.dart
-│   └── login_state.dart
-├── page/
-│   ├── login_page.dart
-│   └── login_view.dart
-└── widget/ (empty directory for your components)
-```
-
-## 🛠️ Installation
-
-Install Packed CLI from pub.dev:
+## 📥 Installation
 
 ```bash
+# From pub.dev
 dart pub global activate packed
 ```
 
-Alternatively, you can install it directly from GitHub:
+---
+
+## 🛠️ Usage
+
+### 1. Initialize Project
+Sets up the core folder structure (`lib/core/`), base classes (Failures, UseCases), and a global Dependency Injection container.
 
 ```bash
-dart pub global activate --source git https://github.com/Ahmedx44/packed
+packed generate init
 ```
 
-## 📖 Usage
+**This command will create:**
+- `lib/core/error/failures.dart`
+- `lib/core/usecases/usecase.dart`
+- `lib/core/network/network_info.dart`
+- `lib/injection_container.dart`
 
-### Generate a New Feature
-
-To generate a new feature, run:
+### 2. Generate a New Feature
+Generates a complete Clean Architecture folder structure with all necessary boilerplate code.
 
 ```bash
 packed generate feature <feature_name>
 ```
 
-Example:
+**Example:**
 ```bash
-packed generate feature profile
+packed generate feature Home
 ```
 
-## 📝 Templates
-
-### State Template
-The generated state includes `isLoading` and `error` fields by default, along with `copyWith` and `Equatable` integration:
-
-```dart
-class ProfileState extends Equatable {
-  final bool isLoading;
-  final String? error;
-
-  const ProfileState({
-    this.isLoading = false,
-    this.error,
-  });
-
-  ProfileState copyWith({
-    bool? isLoading,
-    String? error,
-  }) {
-    return ProfileState(
-      isLoading: isLoading ?? this.isLoading,
-      error: error ?? this.error,
-    );
-  }
-
-  @override
-  List<Object?> get props => [isLoading, error];
-}
+**Generated Structure:**
+```text
+lib/features/home/
+├── data/
+│   ├── datasources/home_remote_datasource.dart
+│   ├── models/home_model.dart
+│   └── repositories/home_repository_impl.dart
+├── domain/
+│   ├── entities/home_entity.dart
+│   ├── repositories/home_repository.dart
+│   └── usecases/get_home_usecase.dart
+├── presentation/
+│   ├── cubit/home_cubit.dart & home_state.dart
+│   ├── pages/home_page.dart & home_view.dart
+│   └── widgets/
+└── di/
+    └── home_di.dart (Dependency Injection)
 ```
 
-### Page & View Template
-- **Page**: Handles `BlocProvider` initialization.
-- **View**: Contains the `Scaffold` and `BlocBuilder` boilerplate.
+### 3. Generate a Standalone Usecase
+Adds a new usecase to an existing feature and automatically registers it in the feature's DI file.
 
-## 🤝 Contributing
+```bash
+packed generate usecase <usecase_name> <feature_name>
+```
 
-Feel free to open issues or submit pull requests to improve the templates or add new commands!
+**Example:**
+```bash
+packed generate usecase UpdateProfile Home
+```
+
+**This command will:**
+1. Create `update_profile_usecase.dart` in `lib/features/home/domain/usecases/`.
+2. Add the necessary import to `lib/features/home/di/home_di.dart`.
+3. Register `UpdateProfileUseCase` in the `GetIt` container within the DI file.
+
+---
+
+## 🏛️ Architecture Overview
+
+### 🎨 Presentation Layer
+- **Cubit**: Handles state management using the Cubit pattern.
+- **Page**: The entry point widget that provides the Cubit using `GetIt`.
+- **View**: The actual UI layout, separated from the Page for better testing and readability.
+
+### 🌐 Domain Layer
+- **Entities**: Simple business objects extending `Equatable`.
+- **Repositories**: Abstract interfaces defining the contract for data operations.
+- **Usecases**: Single-responsibility classes containing business logic.
+
+### 💾 Data Layer
+- **Models**: Data Transfer Objects (DTOs) with JSON serialization (extends Entities).
+- **Datasources**: Remote and Local data handling logic.
+- **Repository Impl**: Concrete implementation of domain repositories.
+
+---
 
 ## 📄 License
 
