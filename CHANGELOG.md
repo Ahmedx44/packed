@@ -1,4 +1,11 @@
+## 0.2.3
+
+- Feature: Added interactive prompt to choose between **Cubit** and **Bloc** when generating a feature.
+- Feature: Added Bloc and Event templates for feature generation.
+- Refactor: Updated DI, Page, and View templates to support both Cubit and Bloc architectures.
+
 ## 0.2.2
+
 - Fix: Added missing documentation comments for public APIs.
 - Fix: Added `lints` package and resolved all static analysis warnings.
 - Fix: Improved cross-platform compatibility by cleaning up dependencies.
