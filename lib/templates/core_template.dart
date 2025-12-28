@@ -1,4 +1,6 @@
+/// A template class for core project files.
 class CoreTemplate {
+  /// Returns the template for the Failure class.
   static String failureTemplate() {
     return '''
 import 'package:equatable/equatable.dart';
@@ -25,6 +27,7 @@ class NetworkFailure extends Failure {
 ''';
   }
 
+  /// Returns the template for the base UseCase class.
   static String usecaseTemplate() {
     return '''
 import 'package:dartz/dartz.dart';
@@ -38,6 +41,7 @@ class NoParams {}
 ''';
   }
 
+  /// Returns the template for the NetworkInfo class.
   static String networkInfoTemplate() {
     return '''
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -57,6 +61,7 @@ class NetworkInfoImpl implements NetworkInfo {
 ''';
   }
 
+  /// Returns the template for the main injection container file.
   static String injectionContainerTemplate() {
     return '''
 import 'package:get_it/get_it.dart';

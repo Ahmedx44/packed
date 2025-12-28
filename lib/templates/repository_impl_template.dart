@@ -17,9 +17,9 @@ class ${pascal}RepositoryImpl implements ${pascal}Repository {
   ${pascal}RepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<Either<Failure, ${pascal}Entity>> get${pascal}() async {
+  Future<Either<Failure, ${pascal}Entity>> get$pascal() async {
     try {
-      final result = await remoteDataSource.get${pascal}();
+      final result = await remoteDataSource.get$pascal();
       return Right(result);
     } catch (e) {
       return Left(ServerFailure(e.toString()));

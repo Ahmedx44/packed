@@ -1,3 +1,8 @@
+## 0.2.2
+- Fix: Added missing documentation comments for public APIs.
+- Fix: Added `lints` package and resolved all static analysis warnings.
+- Fix: Improved cross-platform compatibility by cleaning up dependencies.
+
 ## 0.2.1
 
 - Feature: Added `packed generate init` command to bootstrap project with core layers and DI container.
@@ -20,6 +25,3 @@
 ## 0.1.2
 
 - Fix: Updated version number to 0.1.2.
-
-
-

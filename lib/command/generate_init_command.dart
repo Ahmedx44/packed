@@ -1,64 +1,39 @@
 import 'dart:io';
 import 'package:packed/templates/core_template.dart';
+import 'package:packed/utils/utils.dart';
 
+/// A command to initialize the project with core layers and DI.
 class GenerateInitCommand {
+  /// Runs the command to initialize the project.
   void run() {
-    _createDir('lib/core/error');
-    _createDir('lib/core/usecases');
-    _createDir('lib/core/network');
+    Utils.createDir('lib/core/error');
+    Utils.createDir('lib/core/usecases');
+    Utils.createDir('lib/core/network');
 
-    _createFile('lib/core/error/failures.dart', CoreTemplate.failureTemplate());
-    _createFile(
+    Utils.createFile(
+      'lib/core/error/failures.dart',
+      CoreTemplate.failureTemplate(),
+    );
+    Utils.createFile(
       'lib/core/usecases/usecase.dart',
       CoreTemplate.usecaseTemplate(),
     );
-    _createFile(
+    Utils.createFile(
       'lib/core/network/network_info.dart',
       CoreTemplate.networkInfoTemplate(),
     );
 
     if (!File('lib/injection_container.dart').existsSync()) {
-      _createFile(
+      Utils.createFile(
         'lib/injection_container.dart',
         CoreTemplate.injectionContainerTemplate(),
       );
     }
 
-    _addDependencies();
+    Utils.addDependencies();
 
     print(
-      '✅ Project initialized with Clean Architecture core layers and DI container',
+      'Project initialized with Clean Architecture core layers and DI container',
     );
-  }
-
-  void _createDir(String path) {
-    final dir = Directory(path);
-    if (!dir.existsSync()) {
-      dir.createSync(recursive: true);
-    }
-  }
-
-  void _createFile(String path, String content) {
-    final file = File(path);
-    if (file.existsSync()) {
-      print('⚠️ File already exists at $path');
-      return;
-    }
-    file.writeAsStringSync(content);
-  }
-
-  void _addDependencies() {
-    if (!File('pubspec.yaml').existsSync()) return;
-
-    print('📦 Adding core dependencies...');
-    Process.runSync('flutter', [
-      'pub',
-      'add',
-      'internet_connection_checker',
-      'equatable',
-      'dartz',
-      'get_it',
-      'flutter_bloc',
-    ]);
   }
 }

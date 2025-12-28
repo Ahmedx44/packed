@@ -1,6 +1,8 @@
 import 'package:packed/utils/utils.dart';
 
+/// A template class for Dependency Injection files.
 class DiTemplate {
+  /// Returns the template for a DI registration file for the given [name].
   static String diTemplate(String name) {
     final pascal = Utils.pascal(name);
 

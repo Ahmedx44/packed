@@ -19,7 +19,7 @@ class ${pascal}UseCase implements UseCase<${featurePascal}Entity, NoParams> {
 
   @override
   Future<Either<Failure, ${featurePascal}Entity>> call(NoParams params) async {
-    return await repository.get${featurePascal}();
+    return await repository.get$featurePascal();
   }
 }
 ''';

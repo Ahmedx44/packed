@@ -3,7 +3,9 @@ import 'package:packed/command/generate_feature_command.dart';
 import 'package:packed/command/generate_usecase_command.dart';
 import 'package:packed/command/generate_init_command.dart';
 
+/// The main CLI class for the Packed tool.
 class PackedCli {
+  /// Runs the CLI with the provided [argument] list.
   void run(List<String> argument) {
     final parser = ArgParser();
 
