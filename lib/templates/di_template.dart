@@ -32,7 +32,7 @@ Future<void> init${pascal}Feature() async {
 
   // Data sources
   sl.registerLazySingleton<${pascal}RemoteDataSource>(
-    () => ${pascal}RemoteDataSourceImpl.instance,
+    () => ${pascal}RemoteDataSourceImpl(),
   );
 }
 ''';

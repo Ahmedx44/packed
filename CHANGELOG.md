@@ -1,3 +1,8 @@
+## 0.2.6
+
+- Refactor: Updated `InternetConnectionChecker` to use `.instance` in core DI template.
+- Refactor: Reverted `RemoteDataSourceImpl` to use constructor call `()` instead of `instance` in feature DI template.
+
 ## 0.2.5
 
 - Feature: Updated core import paths in templates to use 4-level relative paths (`../../../../core/`).
