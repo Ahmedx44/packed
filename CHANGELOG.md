@@ -1,3 +1,7 @@
+## 0.2.7
+
+- Docuemntation:Added a note in README telling the user to initalize the depdency injection container in main.dart.
+
 ## 0.2.6
 
 - Refactor: Updated `InternetConnectionChecker` to use `.instance` in core DI template.

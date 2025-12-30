@@ -46,6 +46,18 @@ packed generate init
 - `lib/core/network/network_info.dart`
 - `lib/injection_container.dart`
 
+> [!IMPORTANT] > **CRITICAL:** After running `init` or `feature <feature_name>`, you **must** manually call the initialization function in your `main.dart` file. Otherwise, dependency injection will not work and your app will crash.
+>
+> ```dart
+> import 'injection_container.dart' as di;
+>
+> void main() async {
+>   WidgetsFlutterBinding.ensureInitialized();
+>   await di.init(); // Initialize dependencies
+>   runApp(const MyApp());
+> }
+> ```
+
 ### 2. Generate a New Feature
 
 Generates a complete Clean Architecture folder structure with all necessary boilerplate code. You will be prompted to choose between **Cubit** or **Bloc** for state management.
