@@ -1,3 +1,9 @@
+## 0.2.4
+
+- Feature: Automatically run `packed generate init` if the project is not initialized when generating a feature or usecase.
+- Fix: Added `isInitialized` check to prevent errors when core layers are missing.
+- Fix: Resolved missing `dart:io` import in `generate_usecase_command.dart`.
+
 ## 0.2.3
 
 - Feature: Added interactive prompt to choose between **Cubit** and **Bloc** when generating a feature.
