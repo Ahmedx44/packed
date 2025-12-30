@@ -99,4 +99,10 @@ class Utils {
       'dartz',
     ]);
   }
+
+  /// Checks if the project is initialized with core layers.
+  static bool isInitialized() {
+    return Directory('lib/core').existsSync() &&
+        File('lib/injection_container.dart').existsSync();
+  }
 }

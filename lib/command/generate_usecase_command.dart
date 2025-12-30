@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:packed/command/generate_init_command.dart';
 import 'package:packed/utils/utils.dart';
 import 'package:packed/templates/usecase_template.dart';
 
@@ -6,6 +7,11 @@ import 'package:packed/templates/usecase_template.dart';
 class GenerateUsecaseCommand {
   /// Runs the command to generate a usecase with [usecaseName] for [featureName].
   void run(String usecaseName, String featureName) {
+    if (!Utils.isInitialized()) {
+      print('⚠️ Project not initialized. Initializing with core layers...');
+      GenerateInitCommand().run();
+    }
+
     final nameSnake = Utils.snake(usecaseName);
     final namePascal = Utils.pascal(usecaseName);
     final featureSnake = Utils.snake(featureName);

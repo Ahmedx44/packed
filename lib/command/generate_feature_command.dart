@@ -1,3 +1,4 @@
+import 'package:packed/command/generate_init_command.dart';
 import 'package:packed/templates/cubit_template.dart';
 import 'package:packed/templates/bloc_template.dart';
 import 'package:packed/templates/event_template.dart';
@@ -18,6 +19,11 @@ import 'dart:io';
 class GenerateFeatureCommand {
   /// Runs the command to generate a feature with the given [name].
   void run(String name) {
+    if (!Utils.isInitialized()) {
+      print('⚠️ Project not initialized. Initializing with core layers...');
+      GenerateInitCommand().run();
+    }
+
     final featureSnake = Utils.snake(name);
     final featurePascal = Utils.pascal(name);
     final basePath = 'lib/features/$featureSnake';
