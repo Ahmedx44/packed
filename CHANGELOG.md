@@ -1,11 +1,8 @@
-## 0.2.6
-
-- Documentation: Added a note in README that commands must be run from the project's root directory.
-
 ## 0.2.5
 
 - Feature: Updated core import paths in templates to use 4-level relative paths (`../../../../core/`).
 - Refactor: Updated `RemoteDataSourceImpl` to use a singleton `instance` in DI registration.
+- Documentation: Added a note in README that commands must be run from the project's root directory.
 
 ## 0.2.4
 
