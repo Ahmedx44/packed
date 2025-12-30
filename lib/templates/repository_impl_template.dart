@@ -6,7 +6,7 @@ class RepositoryImplTemplate {
 
     return '''
 import 'package:dartz/dartz.dart';
-import '../../core/error/failures.dart';
+import '../../../../core/error/failures.dart';
 import '../../domain/entities/${name}_entity.dart';
 import '../../domain/repositories/${name}_repository.dart';
 import '../datasources/${name}_remote_datasource.dart';

@@ -7,8 +7,8 @@ class UsecaseTemplate {
 
     return '''
 import 'package:dartz/dartz.dart';
-import '../../core/error/failures.dart';
-import '../../core/usecases/usecase.dart';
+import '../../../../core/error/failures.dart';
+import '../../../../core/usecases/usecase.dart';
 import '../entities/${featureName}_entity.dart';
 import '../repositories/${featureName}_repository.dart';
 

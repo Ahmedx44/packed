@@ -29,6 +29,8 @@ dart pub global activate packed
 
 ## 🛠️ Usage
 
+> **Note:** All commands must be run from the **root directory** of your Flutter project.
+
 ### 1. Initialize Project
 
 Sets up the core folder structure (`lib/core/`), base classes (Failures, UseCases), and a global Dependency Injection container.
