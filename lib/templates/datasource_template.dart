@@ -1,6 +1,8 @@
 import 'package:packed/utils/utils.dart';
 
+/// A template class for Data Source files.
 class DatasourceTemplate {
+  /// Returns the template for a Remote Data Source class with the given [name].
   static String datasourceTemplate(String name) {
     final pascal = Utils.pascal(name);
 
@@ -8,7 +10,7 @@ class DatasourceTemplate {
 import '../models/${name}_model.dart';
 
 abstract class ${pascal}RemoteDataSource {
-  Future<${pascal}Model> get${pascal}();
+  Future<${pascal}Model> get$pascal();
 }
 
 class ${pascal}RemoteDataSourceImpl implements ${pascal}RemoteDataSource {
@@ -16,7 +18,7 @@ class ${pascal}RemoteDataSourceImpl implements ${pascal}RemoteDataSource {
   // ${pascal}RemoteDataSourceImpl(this.client);
 
   @override
-  Future<${pascal}Model> get${pascal}() async {
+  Future<${pascal}Model> get$pascal() async {
     // TODO: Implement remote data source
     return const ${pascal}Model();
   }

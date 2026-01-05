@@ -29,7 +29,10 @@ dart pub global activate packed
 
 ## 🛠️ Usage
 
+> **Note:** All commands must be run from the **root directory** of your Flutter project.
+
 ### 1. Initialize Project
+
 Sets up the core folder structure (`lib/core/`), base classes (Failures, UseCases), and a global Dependency Injection container.
 
 ```bash
@@ -37,24 +40,40 @@ packed generate init
 ```
 
 **This command will create:**
+
 - `lib/core/error/failures.dart`
 - `lib/core/usecases/usecase.dart`
 - `lib/core/network/network_info.dart`
 - `lib/injection_container.dart`
 
+> [!IMPORTANT] > **CRITICAL:** After running `init` or `feature <feature_name>`, you **must** manually call the initialization function in your `main.dart` file. Otherwise, dependency injection will not work and your app will crash.
+>
+> ```dart
+> import 'injection_container.dart' as di;
+>
+> void main() async {
+>   WidgetsFlutterBinding.ensureInitialized();
+>   await di.init(); // Initialize dependencies
+>   runApp(const MyApp());
+> }
+> ```
+
 ### 2. Generate a New Feature
-Generates a complete Clean Architecture folder structure with all necessary boilerplate code.
+
+Generates a complete Clean Architecture folder structure with all necessary boilerplate code. You will be prompted to choose between **Cubit** or **Bloc** for state management.
 
 ```bash
 packed generate feature <feature_name>
 ```
 
 **Example:**
+
 ```bash
 packed generate feature Home
 ```
 
 **Generated Structure:**
+
 ```text
 lib/features/home/
 ├── data/
@@ -66,7 +85,9 @@ lib/features/home/
 │   ├── repositories/home_repository.dart
 │   └── usecases/get_home_usecase.dart
 ├── presentation/
-│   ├── cubit/home_cubit.dart & home_state.dart
+│   ├── cubit/ (or bloc/)
+│   │   ├── home_cubit.dart & home_state.dart
+│   │   └── (or home_bloc.dart, home_event.dart & home_state.dart)
 │   ├── pages/home_page.dart & home_view.dart
 │   └── widgets/
 └── di/
@@ -74,6 +95,7 @@ lib/features/home/
 ```
 
 ### 3. Generate a Standalone Usecase
+
 Adds a new usecase to an existing feature and automatically registers it in the feature's DI file.
 
 ```bash
@@ -81,11 +103,13 @@ packed generate usecase <usecase_name> <feature_name>
 ```
 
 **Example:**
+
 ```bash
 packed generate usecase UpdateProfile Home
 ```
 
 **This command will:**
+
 1. Create `update_profile_usecase.dart` in `lib/features/home/domain/usecases/`.
 2. Add the necessary import to `lib/features/home/di/home_di.dart`.
 3. Register `UpdateProfileUseCase` in the `GetIt` container within the DI file.
@@ -95,16 +119,19 @@ packed generate usecase UpdateProfile Home
 ## 🏛️ Architecture Overview
 
 ### 🎨 Presentation Layer
-- **Cubit**: Handles state management using the Cubit pattern.
-- **Page**: The entry point widget that provides the Cubit using `GetIt`.
+
+- **Cubit / Bloc**: Handles state management using the Cubit or Bloc pattern.
+- **Page**: The entry point widget that provides the Cubit/Bloc using `GetIt`.
 - **View**: The actual UI layout, separated from the Page for better testing and readability.
 
 ### 🌐 Domain Layer
+
 - **Entities**: Simple business objects extending `Equatable`.
 - **Repositories**: Abstract interfaces defining the contract for data operations.
 - **Usecases**: Single-responsibility classes containing business logic.
 
 ### 💾 Data Layer
+
 - **Models**: Data Transfer Objects (DTOs) with JSON serialization (extends Entities).
 - **Datasources**: Remote and Local data handling logic.
 - **Repository Impl**: Concrete implementation of domain repositories.

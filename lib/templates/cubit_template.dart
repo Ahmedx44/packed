@@ -1,6 +1,8 @@
 import 'package:packed/utils/utils.dart';
 
+/// A template class for Cubit files.
 class CubitTemplate {
+  /// Returns the template for a Cubit class with the given [name].
   static String cubitTemplate(String name) {
     final pascal = Utils.pascal(name);
 

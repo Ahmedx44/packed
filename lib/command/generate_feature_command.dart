@@ -1,6 +1,7 @@
-import 'dart:io';
-
+import 'package:packed/command/generate_init_command.dart';
 import 'package:packed/templates/cubit_template.dart';
+import 'package:packed/templates/bloc_template.dart';
+import 'package:packed/templates/event_template.dart';
 import 'package:packed/templates/page_template.dart';
 import 'package:packed/templates/state_template.dart';
 import 'package:packed/templates/view_template.dart';
@@ -12,115 +13,164 @@ import 'package:packed/templates/datasource_template.dart';
 import 'package:packed/templates/repository_impl_template.dart';
 import 'package:packed/templates/di_template.dart';
 import 'package:packed/utils/utils.dart';
+import 'dart:io';
 
+/// A command to generate a new feature with Clean Architecture layers.
 class GenerateFeatureCommand {
+  /// Runs the command to generate a feature with the given [name].
   void run(String name) {
+    if (!Utils.isInitialized()) {
+      print('⚠️ Project not initialized. Initializing with core layers...');
+      GenerateInitCommand().run();
+    }
+
     final featureSnake = Utils.snake(name);
     final featurePascal = Utils.pascal(name);
     final basePath = 'lib/features/$featureSnake';
 
-    _addDependencies();
+    Utils.addDependencies();
+
+    // Prompt for Cubit or Bloc
+    print('Choose state management:');
+    print('1. Cubit (Default)');
+    print('2. Bloc');
+    stdout.write('Enter choice (1 or 2): ');
+    final choice = stdin.readLineSync()?.trim();
+    final isBloc = choice == '2';
+    final stateManagement = isBloc ? 'bloc' : 'cubit';
 
     // DI
-    _createDir('$basePath/di');
-    _createFile(
+    Utils.createDir('$basePath/di');
+    Utils.createFile(
       '$basePath/di/${featureSnake}_di.dart',
-      DiTemplate.diTemplate(featureSnake),
+      DiTemplate.diTemplate(featureSnake, isBloc: isBloc),
     );
 
     // Presentation Layer
-    _createDir('$basePath/presentation/cubit');
-    _createDir('$basePath/presentation/pages');
-    _createDir('$basePath/presentation/widgets');
+    Utils.createDir('$basePath/presentation/$stateManagement');
+    Utils.createDir('$basePath/presentation/pages');
+    Utils.createDir('$basePath/presentation/widgets');
 
-    _createFile(
-      '$basePath/presentation/cubit/${featureSnake}_cubit.dart',
-      CubitTemplate.cubitTemplate(featureSnake),
-    );
+    if (isBloc) {
+      Utils.createFile(
+        '$basePath/presentation/bloc/${featureSnake}_bloc.dart',
+        BlocTemplate.blocTemplate(featureSnake),
+      );
+      Utils.createFile(
+        '$basePath/presentation/bloc/${featureSnake}_event.dart',
+        EventTemplate.eventTemplate(featureSnake),
+      );
+      Utils.createFile(
+        '$basePath/presentation/bloc/${featureSnake}_state.dart',
+        StateTemplate.stateTemplate(featureSnake),
+      );
+    } else {
+      Utils.createFile(
+        '$basePath/presentation/cubit/${featureSnake}_cubit.dart',
+        CubitTemplate.cubitTemplate(featureSnake),
+      );
+      Utils.createFile(
+        '$basePath/presentation/cubit/${featureSnake}_state.dart',
+        StateTemplate.stateTemplate(featureSnake),
+      );
+    }
 
-    _createFile(
-      '$basePath/presentation/cubit/${featureSnake}_state.dart',
-      StateTemplate.stateTemplate(featureSnake),
-    );
-
-    _createFile(
+    Utils.createFile(
       '$basePath/presentation/pages/${featureSnake}_page.dart',
-      PageTemplate.pageTemplate(featureSnake),
+      PageTemplate.pageTemplate(featureSnake, isBloc: isBloc),
     );
 
-    _createFile(
+    Utils.createFile(
       '$basePath/presentation/pages/${featureSnake}_view.dart',
-      ViewTemplate.viewTemplate(featureSnake),
+      ViewTemplate.viewTemplate(featureSnake, isBloc: isBloc),
     );
 
     // Domain Layer
-    _createDir('$basePath/domain/entities');
-    _createDir('$basePath/domain/repositories');
-    _createDir('$basePath/domain/usecases');
+    Utils.createDir('$basePath/domain/entities');
+    Utils.createDir('$basePath/domain/repositories');
+    Utils.createDir('$basePath/domain/usecases');
 
-    _createFile(
+    Utils.createFile(
       '$basePath/domain/entities/${featureSnake}_entity.dart',
       EntityTemplate.entityTemplate(featureSnake),
     );
 
-    _createFile(
+    Utils.createFile(
       '$basePath/domain/repositories/${featureSnake}_repository.dart',
       RepositoryTemplate.repositoryTemplate(featureSnake),
     );
 
-    _createFile(
+    Utils.createFile(
       '$basePath/domain/usecases/get_${featureSnake}_usecase.dart',
       UsecaseTemplate.usecaseTemplate('get_$featureSnake', featureSnake),
     );
 
     // Data Layer
-    _createDir('$basePath/data/datasources');
-    _createDir('$basePath/data/models');
-    _createDir('$basePath/data/repositories');
+    Utils.createDir('$basePath/data/datasources');
+    Utils.createDir('$basePath/data/models');
+    Utils.createDir('$basePath/data/repositories');
 
-    _createFile(
+    Utils.createFile(
       '$basePath/data/datasources/${featureSnake}_remote_datasource.dart',
       DatasourceTemplate.datasourceTemplate(featureSnake),
     );
 
-    _createFile(
+    Utils.createFile(
       '$basePath/data/models/${featureSnake}_model.dart',
       ModelTemplate.modelTemplate(featureSnake),
     );
 
-    _createFile(
+    Utils.createFile(
       '$basePath/data/repositories/${featureSnake}_repository_impl.dart',
       RepositoryImplTemplate.repositoryImplTemplate(featureSnake),
     );
 
+    _registerFeatureInMainDi(featureSnake, featurePascal);
+
     print(
-      '✅ Feature "$featurePascal" with Clean Architecture generated successfully',
+      'Feature "$featurePascal" with Clean Architecture generated successfully',
     );
   }
 
-  void _createDir(String path) {
-    final dir = Directory(path);
-    if (!dir.existsSync()) {
-      dir.createSync(recursive: true);
+  void _registerFeatureInMainDi(String featureSnake, String featurePascal) {
+    final file = File('lib/injection_container.dart');
+    if (!file.existsSync()) return;
+
+    final content = file.readAsStringSync();
+
+    // Add import
+    final importLine =
+        "import 'features/$featureSnake/di/${featureSnake}_di.dart';\n";
+    if (content.contains(importLine)) return;
+
+    final lastImportIndex = content.lastIndexOf('import ');
+    final endOfImports = content.indexOf('\n', lastImportIndex) + 1;
+
+    var newContent =
+        content.substring(0, endOfImports) +
+        importLine +
+        content.substring(endOfImports);
+
+    // Add init call
+    final initCall = "  await init${featurePascal}Feature();\n";
+    if (newContent.contains(initCall)) {
+      file.writeAsStringSync(newContent);
+      return;
     }
-  }
 
-  void _createFile(String path, String content) {
-    final file = File(path);
-    file.writeAsStringSync(content);
-  }
+    if (newContent.contains('// Features will be registered here')) {
+      newContent = newContent.replaceFirst(
+        '// Features will be registered here',
+        '// Features will be registered here\n$initCall',
+      );
+    } else {
+      final lastBrace = newContent.lastIndexOf('}');
+      newContent =
+          newContent.substring(0, lastBrace) +
+          initCall +
+          newContent.substring(lastBrace);
+    }
 
-  void _addDependencies() {
-    if (!File('pubspec.yaml').existsSync()) return;
-
-    print('📦 Adding dependencies...');
-    Process.runSync('flutter', [
-      'pub',
-      'add',
-      'flutter_bloc',
-      'get_it',
-      'equatable',
-      'dartz',
-    ]);
+    file.writeAsStringSync(newContent);
   }
 }
