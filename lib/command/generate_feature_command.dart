@@ -125,8 +125,52 @@ class GenerateFeatureCommand {
       RepositoryImplTemplate.repositoryImplTemplate(featureSnake),
     );
 
+    _registerFeatureInMainDi(featureSnake, featurePascal);
+
     print(
       'Feature "$featurePascal" with Clean Architecture generated successfully',
     );
+  }
+
+  void _registerFeatureInMainDi(String featureSnake, String featurePascal) {
+    final file = File('lib/injection_container.dart');
+    if (!file.existsSync()) return;
+
+    final content = file.readAsStringSync();
+
+    // Add import
+    final importLine =
+        "import 'features/$featureSnake/di/${featureSnake}_di.dart';\n";
+    if (content.contains(importLine)) return;
+
+    final lastImportIndex = content.lastIndexOf('import ');
+    final endOfImports = content.indexOf('\n', lastImportIndex) + 1;
+
+    var newContent =
+        content.substring(0, endOfImports) +
+        importLine +
+        content.substring(endOfImports);
+
+    // Add init call
+    final initCall = "  await init${featurePascal}Feature();\n";
+    if (newContent.contains(initCall)) {
+      file.writeAsStringSync(newContent);
+      return;
+    }
+
+    if (newContent.contains('// Features will be registered here')) {
+      newContent = newContent.replaceFirst(
+        '// Features will be registered here',
+        '// Features will be registered here\n$initCall',
+      );
+    } else {
+      final lastBrace = newContent.lastIndexOf('}');
+      newContent =
+          newContent.substring(0, lastBrace) +
+          initCall +
+          newContent.substring(lastBrace);
+    }
+
+    file.writeAsStringSync(newContent);
   }
 }

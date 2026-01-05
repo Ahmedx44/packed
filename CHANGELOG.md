@@ -3,7 +3,6 @@
 - Docuemntation:Added a note in README telling the user to initalize the depdency injection container in main.dart.
 
 ## 0.2.6
-
 - Refactor: Updated `InternetConnectionChecker` to use `.instance` in core DI template.
 - Refactor: Reverted `RemoteDataSourceImpl` to use constructor call `()` instead of `instance` in feature DI template.
 
