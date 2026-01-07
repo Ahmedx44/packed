@@ -97,6 +97,7 @@ class Utils {
       'get_it',
       'equatable',
       'dartz',
+      'internet_connection_checker',
     ]);
   }
 

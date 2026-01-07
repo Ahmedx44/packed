@@ -10,7 +10,7 @@ A powerful CLI tool to rapidly generate Flutter feature structures following **C
 ## 🚀 Features
 
 - 🏗️ **Clean Architecture**: Automatically generates Data, Domain, and Presentation layers.
-- 📦 **Auto-Dependencies**: Automatically installs `flutter_bloc`, `get_it`, `equatable`, and `dartz` if they are missing.
+- 📦 **Auto-Dependencies**: Automatically installs `flutter_bloc`, `get_it`, `equatable`, `dartz`, and `internet_connection_checker` if they are missing.
 - 💉 **Dependency Injection**: Automatic `get_it` registration for all layers (Datasources, Repositories, Usecases, and Cubits).
 - 🧩 **Modular Structure**: Each feature is self-contained with its own DI file for better maintainability.
 - ⚡ **Standalone Usecases**: Generate new usecases for existing features with automatic DI registration.

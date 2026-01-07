@@ -1,8 +1,14 @@
+## 0.2.8
+
+- Fix: Updated `InternetConnectionChecker` to use constructor call `()` instead of `instance` in feature DI template.
+
 ## 0.2.7
 
-- Docuemntation:Added a note in README telling the user to initalize the depdency injection container in main.dart.
+- Feature: Added `internet_connection_checker` to the list of automatically installed dependencies.
+- Documentation: Added critical instruction to README about manually initializing dependency injection in `main.dart`.
 
 ## 0.2.6
+
 - Refactor: Updated `InternetConnectionChecker` to use `.instance` in core DI template.
 - Refactor: Reverted `RemoteDataSourceImpl` to use constructor call `()` instead of `instance` in feature DI template.
 
